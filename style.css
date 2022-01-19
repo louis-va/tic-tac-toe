@@ -26,7 +26,7 @@ p, h1, h2, h3, h4, h5, h6 {
 /** FONTS **/
 @font-face {
     font-family: "VT 323";
-    src: url("https://louis-va.github.io/ti-108/fonts/VT323-Regular.ttf") format("truetype");
+    src: url("https://louis-va.github.io/tic-tac-toe/fonts/VT323-Regular.ttf") format("truetype");
 }
 
 /* GENERAL */
