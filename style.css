@@ -31,14 +31,18 @@ p, h1, h2, h3, h4, h5, h6 {
 
 /* GENERAL */
 :root {
+    font-size: 14px;
+    font-family: "VT 323", monospace;
+
     --bg-color: rgb(0, 15, 7);
     --text-color: rgb(30, 253, 137);
     --hover-color: rgba(30, 253, 137, .05);
 }
 
-body {
-    font-size: 12px;
-    font-family: "VT 323", monospace;
+@media screen and (max-width: 420px) {
+    :root {
+        font-size: 3.3vw;
+    }
 }
 
 section.main {

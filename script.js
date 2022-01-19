@@ -31,6 +31,7 @@ const Game = (() => {
         player1 = Player("player", "X");
         player2 = Player("ia", "O");
         reset();
+        currentPlayer = player1;
     }
 
     const _switchTurn = () => {
@@ -75,7 +76,6 @@ const Game = (() => {
         _checkWinningCombinations();
         _checkTied();
         _switchTurn();
-        if (currentPlayer.getName() == "ia" && !gameIsOver) iaPlay();
     }
 
     const _endGame = (tie) => {
@@ -92,9 +92,12 @@ const Game = (() => {
     const getWinner = () => winner;
     const getCurrentPlayer = () => currentPlayer;
     const isOver = () => gameIsOver;
+    const getIaIsPlaying = () => iaIsPlaying;
+    const setIaIsPlaying = (value) => iaIsPlaying = value;
 
     const placeMarker = (squareRow, squareCol) => {
-        if(grid[squareRow][squareCol] == "" && !gameIsOver ) {
+        if(grid[squareRow][squareCol] == "" 
+            && !gameIsOver) {
             grid[squareRow][squareCol] = currentPlayer.getMarker();
             _endOfTurn();
         }
@@ -123,7 +126,7 @@ const Game = (() => {
 
     _init();
 
-    return { getGrid, getWinner, getCurrentPlayer, isOver, placeMarker, reset, iaPlay };
+    return { getGrid, getWinner, getCurrentPlayer, getIaIsPlaying, setIaIsPlaying, isOver, placeMarker, reset, iaPlay };
 })();
 
 const DisplayController = (() => {
@@ -178,8 +181,12 @@ const DisplayController = (() => {
     }
 
     const _clickOnSquare = (row, col) => {
-        Game.placeMarker(row, col);
-        _updateDisplay();
+        if (!Game.getIaIsPlaying()) {
+            Game.placeMarker(row, col);
+            _updateDisplay();
+
+            if (!Game.isOver()) _iaPlay();
+        }
     }
 
     const _updateScore = () => {
@@ -199,8 +206,17 @@ const DisplayController = (() => {
         }
         replayButton.classList.toggle("hidden");
         _displayText(`>> New game. [${Game.getCurrentPlayer().getName()}] starts.`)
-        if (Game.getCurrentPlayer().getName() == "ia") Game.iaPlay();
+        if (Game.getCurrentPlayer().getName() == "ia") _iaPlay();
         _updateDisplay();
+    }
+
+    const _iaPlay = () => {
+        Game.setIaIsPlaying(true);
+        setTimeout(() => {
+            Game.iaPlay();
+            _updateDisplay();
+            Game.setIaIsPlaying(false);
+        }, IA_SPEED);
     }
 
     const _displayText = (text) => {
@@ -213,7 +229,7 @@ const DisplayController = (() => {
         function typewriter(index) {
             if (index < textArray.length) {
                 feedback.textContent = feedback.textContent + textArray[index];
-                timerID = setTimeout(() => typewriter(index + 1), 60);
+                timerID = setTimeout(() => typewriter(index + 1), 40);
             }
         }
         typewriter(0);
@@ -227,6 +243,7 @@ const DisplayController = (() => {
     ];
 
     let timerID;
+    const IA_SPEED = 750; // time the IA takes to play in ms
     const replayButton = document.getElementById("replay_btn");
     const feedback = document.getElementById("feedback");
 
