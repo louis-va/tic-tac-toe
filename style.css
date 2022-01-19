@@ -1,0 +1,170 @@
+/* RESET */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+* {
+    margin: 0;
+}
+html, body {
+    height: 100%;
+}
+body {
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+}
+img, picture, video, canvas, svg {
+    display: block;
+    max-width: 100%;
+}
+input, button, textarea, select {
+    font: inherit;
+}
+p, h1, h2, h3, h4, h5, h6 {
+    overflow-wrap: break-word;
+}
+
+/** FONTS **/
+@font-face {
+    font-family: "VT 323";
+    src: url("/fonts/VT323-Regular.ttf") format("truetype");
+}
+
+/* GENERAL */
+:root {
+    --bg-color: rgb(0, 15, 7);
+    --text-color: rgb(30, 253, 137);
+    --hover-color: rgba(30, 253, 137, .05);
+}
+
+body {
+    font-size: 12px;
+    font-family: "VT 323", monospace;
+}
+
+section.main {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background-color: var(--bg-color);
+}
+
+/* OVERLAY */
+.screen-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% .18rem, .3rem 100%;
+    pointer-events: none;
+}
+
+.flare-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 75%);
+    pointer-events: none;
+}
+
+/* GAME BOARD */
+.grid {
+    border: .1rem solid var(--text-color);
+    background-color: var(--hover-color);
+}
+
+.grid>.row {
+    display: flex;
+}
+
+.grid>.row>button {
+    border: .1rem solid var(--text-color);
+    margin: 0;
+    padding: 0;
+    display: inline-block;
+    vertical-align: middle;
+    white-space: normal;
+    background: none;
+    line-height: 1;
+    font-size: 4rem;
+    font-family: inherit;
+    color: var(--text-color);
+    width: 9rem;
+    height: 9rem;
+    cursor: pointer;
+}
+
+.grid>.row>button:focus {
+    outline: none;
+}
+
+.grid>.row>button:disabled {
+    background-color: var(--hover-color);
+    cursor: default;
+}
+
+.grid>.row>button:hover:enabled {
+    background-color: var(--hover-color);
+}
+
+/* INFOS */
+.infos {
+    margin-top: .5rem;
+    width: 27rem;
+    font-size: 1.3rem;
+    color: var(--text-color);
+    text-transform: uppercase;
+}
+
+.infos>.scores {
+    display: flex;
+    justify-content: space-between;
+    height: 1.5rem;
+}
+
+.infos>.scores>.players {
+    display: flex;
+}
+
+.infos>.scores>.players>.player {
+    margin-right: 1.5rem;
+}
+
+.infos button.replay {
+    border: none;
+    margin: 0;
+    padding: 0;
+    line-height: 1;
+    color: var(--bg-color);
+    background: var(--text-color);
+    cursor: pointer;
+}
+
+.infos>.text {
+    display: inline-block;
+    height: 1.5rem;
+}
+
+.infos>.text::after {
+    content: " ";
+    display: inline-block;
+    height: .8rem;
+    width: .5rem;
+    margin-left: .2rem;
+    background-color: var(--text-color);
+    animation: blink 1s steps(2, start) infinite;
+}
+
+@keyframes blink{
+    to { visibility: hidden; }
+}
+
+.hidden {
+    display: none;
+}

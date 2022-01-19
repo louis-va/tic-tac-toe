@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <section class="main">
+        <div class="grid">
+            <div class="row">
+                <button id="sq_1_1"></button>
+                <button id="sq_1_2"></button>
+                <button id="sq_1_3"></button>
+            </div>
+            <div class="row">
+                <button id="sq_2_1"></button>
+                <button id="sq_2_2"></button>
+                <button id="sq_2_3"></button>
+            </div>
+            <div class="row">
+                <button id="sq_3_1"></button>
+                <button id="sq_3_2"></button>
+                <button id="sq_3_3"></button>
+            </div>
+        </div>
+        <div class="infos">
+            <div class="scores">
+                <div class="players">
+                    <div class="player" id="player">
+                        <span class="name">Player</span> [<span class="score">0</span>]
+                    </div>
+                    <div class="ia" id="ia">
+                        <span class="name">IA</span> [<span class="score">0</span>]
+                    </div>
+                </div>
+                <div>
+                    <button class="replay hidden" id="replay_btn">REPLAY</button>
+                </div>
+            </div>
+            <div class="text" id="feedback"></div>
+        </div>
+        <div class="screen-overlay"></div>
+        <div class="flare-overlay"></div>
+    </section>
+</body>
+<script src="script.js"></script>
+</html>
