@@ -29,7 +29,7 @@ const Game = (() => {
 
     const _init = () => {
         player1 = Player("player", "X");
-        player2 = Player("ia", "O");
+        player2 = Player("ai", "O");
         reset();
         currentPlayer = player1;
     }
@@ -114,14 +114,80 @@ const Game = (() => {
     }
 
     const iaPlay = () => {
+        let winningLines = [
+            [[0, 0], [0, 1], [0, 2]],
+            [[1, 0], [1, 1], [1, 2]],
+            [[2, 0], [2, 1], [2, 2]],
+            [[0, 0], [1, 0], [2, 0]],
+            [[0, 1], [1, 1], [2, 1]],
+            [[0, 2], [1, 2], [2, 2]],
+            [[0, 0], [1, 1], [2, 2]],
+            [[0, 2], [1, 1], [2, 0]]
+        ]
+
+        let square1, square2, square3, row, column, marker;
+
+        // If you have two in a row, play the third to get three in a row
+        winningLines.forEach(line => {
+            marker = player2.getMarker();
+            square1 = grid[line[0][0]][line[0][1]];
+            square2 = grid[line[1][0]][line[1][1]];
+            square3 = grid[line[2][0]][line[2][1]];
+            
+            if (square1 == marker && square2 == marker && square3 == "") {
+                row = line[2][0];
+                column = line[2][1];
+            } else if (square2 == marker && square3 == marker && square1 == "") {
+                row = line[0][0];
+                column = line[0][1];
+            } else if (square1 == marker && square3 == marker && square2 == "") {
+                row = line[1][0];
+                column = line[1][1];
+            }
+        });
+        if (row != undefined) {
+            placeMarker(row, column);
+            return;
+        }
+
+        // If the opponent has two in a row, play the third to block them
+        winningLines.forEach(line => {
+            marker = player1.getMarker();
+            square1 = grid[line[0][0]][line[0][1]];
+            square2 = grid[line[1][0]][line[1][1]];
+            square3 = grid[line[2][0]][line[2][1]];
+            
+            if (square1 == marker && square2 == marker && square3 == "") {
+                row = line[2][0];
+                column = line[2][1];
+            } else if (square2 == marker && square3 == marker && square1 == "") {
+                row = line[0][0];
+                column = line[0][1];
+            } else if (square1 == marker && square3 == marker && square2 == "") {
+                row = line[1][0];
+                column = line[1][1];
+            }
+        });
+        if (row != undefined) {
+            placeMarker(row, column);
+            return;
+        }
+
+        // Play the center
+        if (grid[1][1] == "") {
+            placeMarker(1, 1);
+            return;
+        }
+
+        // Play a random move
         let squareIsEmpty = false;
-        let row, column;
         while (!squareIsEmpty) {
             row = Math.floor(Math.random() * 3);
             column = Math.floor(Math.random() * 3);
             squareIsEmpty = (grid[row][column] == "") ? true : false;
         }
         placeMarker(row, column);
+        return;
     }
 
     _init();
@@ -206,7 +272,7 @@ const DisplayController = (() => {
         }
         replayButton.classList.toggle("hidden");
         _displayText(`>> New game. [${Game.getCurrentPlayer().getName()}] starts.`)
-        if (Game.getCurrentPlayer().getName() == "ia") _iaPlay();
+        if (Game.getCurrentPlayer().getName() == "ai") _iaPlay();
         _updateDisplay();
     }
 
@@ -243,7 +309,7 @@ const DisplayController = (() => {
     ];
 
     let timerID;
-    const IA_SPEED = 750; // time the IA takes to play in ms
+    const IA_SPEED = 1000; // time the IA takes to play in ms
     const replayButton = document.getElementById("replay_btn");
     const feedback = document.getElementById("feedback");
 
